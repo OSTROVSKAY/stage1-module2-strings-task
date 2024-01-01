@@ -1,5 +1,9 @@
 package com.epam.mjc;
 
+import java.util.LinkedList;
+
+import java.util.List;
+
 public class MethodParser {
 
     /**
@@ -20,6 +24,103 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+
+        MethodSignature signature = new MethodSignature();
+
+        String accessModifier = null;
+
+        String returnType = null;
+
+        String methodName = null;
+
+        List<MethodSignature.Argument> arguments = new LinkedList<>();
+
+        StringBuilder sb = new StringBuilder();
+
+        String b = null;
+
+        for(int i = 0; i < signatureString.length(); i++) {
+
+            if(signatureString.charAt(i) != '(') {
+
+                sb.append(signatureString.charAt(i));
+
+            } else { break;}
+
+        }
+
+        b = sb.toString();
+
+        String[] c = b.split(" ");
+
+        if(c.length == 3) {
+
+            signature.setAccessModifier(c[0]);
+
+            signature.setReturnType(c[1]);
+
+            signature.setMethodName(c[2]);
+
+
+        } else if (c.length == 2) {
+
+            signature.setReturnType(c[0]);
+
+            signature.setMethodName(c[1]);
+
+
+        }
+
+
+        int check = 0;
+
+        StringBuilder sbb = new StringBuilder();
+
+        for( int i = 0; i < signatureString.length(); i++ ) {
+
+            if(signatureString.charAt(i) == '(') {
+
+                check = 1;
+
+
+            }
+
+            if(check == 1 && signatureString.charAt(i) != '(' && signatureString.charAt(i) != ')') {
+
+                sbb.append(signatureString.charAt(i));
+
+            }
+
+
+        }
+
+        String x = sbb.toString();
+
+
+        String[] d = x.split(", ");
+
+
+        if(x.length() != 0) {
+
+            for (int i = 0; i < d.length; i++) {
+
+                String[] d1 = d[i].split(" ");
+
+                MethodSignature.Argument argument = new MethodSignature.Argument();
+
+                argument.setType(d1[0]);
+
+                argument.setName(d1[1]);
+
+                arguments.add(argument);
+
+            }
+
+        }
+
+        signature.setArguments(arguments);
+
+        return signature;
+
     }
 }
